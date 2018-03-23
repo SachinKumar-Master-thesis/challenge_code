@@ -1,0 +1,13 @@
+path:
+  data: ../../data/audio/data
+  base: ../../resources/audio_emotion/
+  features: features/
+  normalizer: feature_normalizers/
+  normalized: feature_normalized/
+  feature_selection: feature_selection/
+  models: acoustic_models/
+
+features:
+  fs: 22050.0
+  win_length_seconds: 0.020
+  hop_length_seconds: 0.010
