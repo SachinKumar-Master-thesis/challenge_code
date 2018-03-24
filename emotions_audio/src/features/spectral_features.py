@@ -1,4 +1,4 @@
-from emotions_audio.src.features.feature_base import SpectralBase
+from emotions_audio.src.features.feature_base import SpectralBase, FeaturesBase
 import librosa as lib
 import numpy as np
 
@@ -21,10 +21,10 @@ class Mel(SpectralBase):
         self.get_stft(pma_data)
 
         lma_filter = lib.filters.mel(sr=self.sr, n_fft=self.n_fft, n_mels=self.d_mel['n_mels'],
-                                     fmax= self.d_mel['fmax'], fmin=self.d_mel['fmax'])
-        self.melspectogram = lib.amplitude_to_db(self.power_spectogram)*lma_filter
+                                     fmax= self.d_mel['fmax'], fmin=self.d_mel['fmin'])
+        self.melspectogram = lib.amplitude_to_db(np.dot(lma_filter, self.power_spectogram))
         self.__CMN()
 
     def get_mfcc(self, pma_data):
-        self.melspectogram(pma_data)
+        self.get_melspectogram(pma_data)
         self.mfcc = lib.feature.mfcc(S=self.melspectogram, n_mfcc=self.d_mel['n_mfcc'])

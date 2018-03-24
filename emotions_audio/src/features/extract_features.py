@@ -16,7 +16,8 @@ class ExtractFeatures(object):
 
     def get_save_address(self, pv_filename):
         lv_name = path.splitext(path.basename(pv_filename))[0]
-        return path.join(self.v_feature_path, lv_name+'.pickle')
+        lv_base_folder = path.basename(path.dirname(pv_filename))
+        return path.join(self.v_feature_path, lv_base_folder + '_' +lv_name+'.pickle')
 
     def get_files(self):
         self.files = glob(path.join(self.v_data_path,'*','*.wav'))
@@ -30,12 +31,11 @@ class ExtractFeatures(object):
 
             # get power and mel-spectrogram
             lcl_mel  = Mel(pd_config=self.d_config)
-            lcl_mel.get_melspectogram(pma_data=lma_data)
-
+            lcl_mel.get_mfcc(pma_data=lma_data)
 
             lv_save_address = self.get_save_address(f)
-            ld_features = {'features':{'mel': lcl_mel.melspectogram, 'stft':lcl_mel.power_spectogram},
-                           'config': self.d_config}
+            ld_features = {'features':{'mel': lcl_mel.melspectogram.T, 'stft':lcl_mel.power_spectogram.T,
+                            'mfcc': lcl_mel.mfcc.T},'config': self.d_config}
             save_pickle(pd_data=ld_features, pv_address=lv_save_address)
 
 
