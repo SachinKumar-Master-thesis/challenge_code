@@ -14,8 +14,6 @@ def video2audio(pv_address):
         check_file(path.dirname(lv_save_address))
         command = "ffmpeg -i {0} -ab 160k -ac 2 -ar 44100 -vn {1}".format(f, lv_save_address)
         subprocess.call(command, shell=True)
-        if i >10:
-            break
 
 if __name__ == '__main__':
     lv_load_address = '/media/shini/D/hmburg_competation/data/video_data'
