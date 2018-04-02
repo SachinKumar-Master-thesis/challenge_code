@@ -24,13 +24,13 @@ class BaseModel(object):
         lv_video = '_'.join(lv_file_name.split('_')[0:2])
         lv_utternce = '{0}.mp4'.format('_'.join(lv_file_name.split('_')[2:]))
         lf_label = self.f_meta.loc[(self.f_meta['video']==lv_video) & ( self.f_meta['utterance']==lv_utternce), :]
+        lma_labels = np.zeros((1,2))
         if not lf_label.empty:
-            pma_labels[pv_count,0] = lf_label['arousal'].values[0]
-            pma_labels[pv_count,1] = lf_label['valence'].values[0]
-            return pma_labels, True
+            lma_labels[0,0] = lf_label['arousal'].values[0]
+            lma_labels[0,1] = lf_label['valence'].values[0]
+            return lma_labels, True
 
-        pma_labels = np.delete(pma_labels, pv_count, axis=0)
-        return  pma_labels, False
+        return  lma_labels, False
 
     @abc.abstractmethod
     def prepare_data2train(self):
